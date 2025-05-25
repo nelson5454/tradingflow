@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Trading Flow - Latest in Trading News</title>
+  <meta name="description" content="Stay updated with the latest trading news and strategies from experts." />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <script src="https://js.stripe.com/v3/"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+    header {
+        background-color: #1e1e2f;
+        padding: 1.5rem 2rem;
+        text-align: center;
+    }
+    header h1 {
+        font-size: 3rem;
+        color: #00f5d4; /* Bright contrast color */
+        margin: 0;
+    }
+    header p {
+        color: #cccccc;
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+    }
+    .article-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    }
+    .article-link:hover .article {
+    background-color: #1f1f2e; /* Optional hover effect */
+    }
+    .main-container {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .article {
+      background-color: #ffffff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .article h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.2rem;
+    }
+    .article p {
+      margin: 0.5rem 0 0;
+      color: #555;
+    }
+    .donate-section {
+      background-color: #ffffff;
+      padding: 2rem;
+      margin-top: 3rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .donate-section button {
+      margin: 0.5rem;
+      padding: 1rem 1.5rem;
+      background-color: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .donate-section button:hover {
+      background-color: #4f46e5;
+    }
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 1rem;
+      background-color: #f0f0f0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    #error-message {
+      color: red;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Trading Flow</h1>
+    <p>Sharing Insightful Perspectives on the Markets</p>
+  </header>
+
+  <div class="main-container">
+    <!-- Article List Section -->
+    <section>
+      <h2>Featured AI Articles</h2>
+      <div class="article-list">
+        <a href="article1.html" class="article-link">
+          <div class="article">
+            <h3>How Fed Policy is Shaping the Stock Market in 2025</h3>
+            <p>Analyzing recent interest rate changes and their impact on equity markets and trader sentiment.</p>
+          </div>
+        </a>
+        <a href="article2.html" class="article-link">
+          <div class="article">
+            <h3>Crypto Comeback: Is Bitcoin Ready to Rally Again?</h3>
+            <p>Key technical indicators and market behavior suggest a new cycle may be on the horizon for major cryptocurrencies.</p>
+          </div>
+        </a>
+        <a href="article3.html" class="article-link">
+          <div class="article">
+            <h3>Understanding Order Flow in a Volatile Market</h3>
+            <p>Discover how order flow analysis can help you navigate sudden price movements and improve trade timing.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Donation Section -->
+    <section class="donate-section">
+      <h2>Support Trading Flow</h2>
+      <p>If you find our articles valuable, consider making a donation to support independent trading journalism and education.</p>
+
+
+      <h3>One-time Donations</h3>
+      <button data-checkout-mode="payment" data-price-id="price_1RSBvYFRT4irb9JoxYjXVKy2">Donate $200.00</button>
+      <button data-checkout-mode="payment" data-price-id="sku_GU4KO8nfdg8G2Z">Donate $500.00</button>
+      <button data-checkout-mode="payment" data-price-id="sku_GU4LB0wBViiYsm">Donate $5000.00</button>
+
+      <h3 style="margin-top: 2rem;">Recurring Donation</h3>
+      <button data-checkout-mode="subscription" data-price-id="plan_GU4MXg0k0Uv1S6">Donate $700.00/month</button>
+
+      <div id="error-message"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 Trading Flow. All rights reserved.</p>
+      <p>Powered by Stripe for secure donations.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Replace with your actual Stripe publishable key
+    var PUBLISHABLE_KEY = 'pk_test_51RQOngFRT4irb9JolqV9P9i34PLVFmyaA9oe79mEDsDh79f4Rgi63qRr85XFM1PFV7YvO106xfJfgAd0yxhrmSQx009c1SYbpk';
+    var DOMAIN = location.href.replace(/[^/]*$/, '');
+    var stripe = Stripe(PUBLISHABLE_KEY);
+
+    var handleResult = function (result) {
+      if (result.error) {
+        document.getElementById('error-message').textContent = result.error.message;
+      }
+    };
+
+    document.querySelectorAll('button').forEach(function (button) {
+      button.addEventListener('click', function (e) {
+        var mode = e.target.dataset.checkoutMode;
+        var priceId = e.target.dataset.priceId;
+        var items = [{ price: priceId, quantity: 1 }];
+
+        stripe.redirectToCheckout({
+          mode: mode,
+          lineItems: items,
+          successUrl: DOMAIN + 'success.html?session_id={CHECKOUT_SESSION_ID}',
+          cancelUrl: DOMAIN + 'canceled.html?session_id={CHECKOUT_SESSION_ID}',
+        }).then(handleResult);
+      });
+    });
+  </script>
+</body>
+</html>
